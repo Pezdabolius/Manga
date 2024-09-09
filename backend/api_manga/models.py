@@ -72,6 +72,7 @@ class Manga(models.Model):
     cover = models.ImageField(upload_to='covers/', blank=True)
     background = models.ImageField(upload_to='backgrounds/', blank=True)
     authors = models.ForeignKey(Author, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, default=None)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags)
     releases = models.ManyToManyField(Release)

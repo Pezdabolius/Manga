@@ -37,6 +37,7 @@ class ReleaseAdmin(admin.ModelAdmin):
 class MangaAdmin(admin.ModelAdmin):
     list_display = ['title', 'description', 'authors',
                     'publisher', 'type', 'status', 'rating']
+    filter_horizontal = ('tags', 'releases')
     search_fields = ['title', 'authors', 'publisher', 'type', 'status']
     list_filter = ['authors', 'publisher', 'type', 'status']
     list_editable = ['status', 'rating', 'type']
