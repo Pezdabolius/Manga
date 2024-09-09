@@ -3,38 +3,44 @@ from .models import Author, Artist, Publisher, \
     Tags, Genre, Release, Manga
 
 
-class AuthorSerializer(serializers.ModelSerializer):
+class CommonSerializer(serializers.ModelSerializer):
     class Meta:
+        model = None
+        fields = []
+
+
+class AuthorSerializer(CommonSerializer):
+    class Meta(CommonSerializer.Meta):
         model = Author
         fields = ['name', 'description']
 
 
-class TagsSerializer(serializers.ModelSerializer):
-    class Meta:
+class TagSerializer(CommonSerializer):
+    class Meta(CommonSerializer.Meta):
         model = Tags
         fields = ['name']
 
 
-class GenreSerializer(serializers.ModelSerializer):
-    class Meta:
+class GenreSerializer(CommonSerializer):
+    class Meta(CommonSerializer.Meta):
         model = Genre
         fields = ['name']
 
 
-class ReleaseSerializer(serializers.ModelSerializer):
-    class Meta:
+class ReleaseSerializer(CommonSerializer):
+    class Meta(CommonSerializer.Meta):
         model = Release
         fields = ['name']
 
 
-class PublisherSerializer(serializers.ModelSerializer):
-    class Meta:
+class PublisherSerializer(CommonSerializer):
+    class Meta(CommonSerializer.Meta):
         model = Publisher
         fields = ['name', 'description']
 
 
-class ArtistSerializer(serializers.ModelSerializer):
-    class Meta:
+class ArtistSerializer(CommonSerializer):
+    class Meta(CommonSerializer.Meta):
         model = Artist
         fields = ['name', 'description']
 
