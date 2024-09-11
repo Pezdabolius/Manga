@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Author, Artist, Publisher, \
-    Tags, Genre, Release, Manga
+    Tag, Genre, Release, Manga
 
 
 class CommonSerializer(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class AuthorSerializer(CommonSerializer):
 
 class TagSerializer(CommonSerializer):
     class Meta(CommonSerializer.Meta):
-        model = Tags
+        model = Tag
         fields = ['name']
 
 
@@ -49,10 +49,12 @@ class MangaSerializer(serializers.ModelSerializer):
     authors = serializers.SlugRelatedField(slug_field='name', read_only=True)
     artist = serializers.SlugRelatedField(slug_field='name', read_only=True)
     publisher = serializers.SlugRelatedField(slug_field='name', read_only=True)
-    tags = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
-    releases = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
+    tag = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
+    genre = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
+    release = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
     type = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
+
     class Meta:
         model = Manga
         fields = '__all__'

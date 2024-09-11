@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Author, Artist, Publisher, \
-    Tags, Genre, Release, Manga
+    Tag, Genre, Release, Manga
 
 
 @admin.register(Author)
@@ -23,7 +23,7 @@ class GenreAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
-@admin.register(Tags)
+@admin.register(Tag)
 class TagsAdmin(admin.ModelAdmin):
     list_display = ['name']
 
@@ -35,9 +35,9 @@ class ReleaseAdmin(admin.ModelAdmin):
 
 @admin.register(Manga)
 class MangaAdmin(admin.ModelAdmin):
-    list_display = ['title', 'description', 'authors',
+    list_display = ['title', 'description', 'author',
                     'publisher', 'type', 'status', 'rating']
-    filter_horizontal = ('tags', 'releases')
-    search_fields = ['title', 'authors', 'publisher', 'type', 'status']
-    list_filter = ['authors', 'publisher', 'type', 'status']
+    filter_horizontal = ('genre','tag', 'release')
+    search_fields = ['title', 'author', 'publisher', 'type', 'status']
+    list_filter = ['author', 'publisher', 'type', 'status']
     list_editable = ['status', 'rating', 'type']

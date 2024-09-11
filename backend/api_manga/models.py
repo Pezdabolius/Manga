@@ -40,12 +40,22 @@ class Genre(CommonInfo):
     pass
 
 
-class Tags(CommonInfo):
+class Tag(CommonInfo):
     pass
 
 
 class Release(CommonInfo):
     pass
+
+
+def dynamic_cover_upload_to(instance, filename):
+    filename = f'{instance.title}.jpg'
+    return f'covers/{filename}'
+
+
+def dynamic_background_upload_to(instance, filename):
+    filename = f'Back_for_{instance.title}.jpg'
+    return f'backgrounds/{filename}'
 
 
 class Manga(models.Model):
@@ -69,13 +79,14 @@ class Manga(models.Model):
     ]
     title = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=1500)
-    cover = models.ImageField(upload_to='covers/', blank=True)
-    background = models.ImageField(upload_to='backgrounds/', blank=True)
-    authors = models.ForeignKey(Author, on_delete=models.CASCADE)
+    cover = models.ImageField(upload_to=dynamic_cover_upload_to, blank=True)
+    background = models.ImageField(upload_to=dynamic_background_upload_to, blank=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, default=None)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tags)
-    releases = models.ManyToManyField(Release)
+    tag = models.ManyToManyField(Tag)
+    genre = models.ManyToManyField(Genre)
+    release = models.ManyToManyField(Release, blank=True)
     type = models.CharField(max_length=2, choices=MANGA_TYPE)
     status = models.CharField(max_length=2, choices=STATUS)
     rating = models.CharField(max_length=5, choices=RATED)

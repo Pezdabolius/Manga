@@ -1,8 +1,9 @@
 from django.shortcuts import render
+from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Author, Artist, Publisher, \
-    Tags, Genre, Release, Manga
+    Tag, Genre, Release, Manga
 from .serializers import MangaSerializer, AuthorSerializer, ArtistSerializer, \
     PublisherSerializer, TagSerializer, GenreSerializer
 from rest_framework.decorators import api_view
@@ -31,7 +32,9 @@ class CommonDetailAPIView(APIView):
 
     def get(self, request, pk):
         queryset = self.queryset.objects.get(pk=pk)
-        manga = Manga.objects.filter(authors=queryset.id).all()
+        manga = Manga.objects.filter(Q(author=queryset.id)|
+                                     Q(artist=queryset.id)|
+                                     Q(publisher=queryset.id)).all()
         manga_serializer = MangaSerializer(manga, many=True)
         serializer = self.serializer_class(queryset)
         manga_list = [
@@ -82,7 +85,7 @@ class PublisherAPI(CommonListAPIView, CommonDetailAPIView):
 
 
 class TagAPI(CommonListAPIView):
-    queryset = Tags
+    queryset = Tag
     serializer_class = TagSerializer
 
 
