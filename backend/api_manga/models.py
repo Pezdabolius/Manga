@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+import zipfile
 
 
 class CommonForPeople(models.Model):
@@ -97,5 +99,30 @@ class Manga(models.Model):
     class Meta:
         ordering = ['title']
 
+
+def dynamic_archive_upload_to(instance, filename):
+    filename = f'{instance.title}.zip'
+    return f'chapters/{instance.manga.title}/{instance.volume}/{instance.chapter}/{filename}'
+
+
+class Chapter(models.Model):
+    manga = models.ForeignKey(Manga, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    title = models.CharField(max_length=100, unique=True)
+    volume = models.IntegerField()
+    chapter = models.IntegerField()
+    archive = models.FileField(upload_to=dynamic_archive_upload_to)
+
+    def extract_images(self):
+        chapter = []
+
+        archive_path = self.archive.path
+
+        with zipfile.ZipFile(archive_path, 'r') as archive:
+            for images in archive.namelist():
+                if images.endswith(('jpg', 'jpeg', 'png')):
+                    chapter.append(images)
+
+        return chapter
 
 

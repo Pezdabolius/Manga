@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Author, Artist, Publisher, \
-    Tag, Genre, Release, Manga
+    Tag, Genre, Release, Manga, Chapter
 
 
 @admin.register(Author)
@@ -41,3 +41,9 @@ class MangaAdmin(admin.ModelAdmin):
     search_fields = ['title', 'author', 'publisher', 'type', 'status']
     list_filter = ['author', 'publisher', 'type', 'status']
     list_editable = ['status', 'rating', 'type']
+
+
+@admin.register(Chapter)
+class ChapterAdmin(admin.ModelAdmin):
+    list_display = ['manga', 'volume', 'chapter', 'title']
+    list_filter = ['manga', 'volume']

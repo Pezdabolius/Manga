@@ -12,4 +12,6 @@ urlpatterns = [
     path('api/publisher_detail/<pk>/', views.PublisherAPI.as_view()),
     path('api/tags_list/', views.TagAPI.as_view()),
     path('api/genres_list/', views.GenreAPI.as_view()),
+    path('api/release_list/', views.ReleaseAPI.as_view()),
+    path('api/chapter_detail/<pk>/', views.chapter_detail),
 ]

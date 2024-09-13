@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Author, Artist, Publisher, \
-    Tag, Genre, Release, Manga
+    Tag, Genre, Release, Manga, Chapter
 from .serializers import MangaSerializer, AuthorSerializer, ArtistSerializer, \
-    PublisherSerializer, TagSerializer, GenreSerializer
+    PublisherSerializer, TagSerializer, GenreSerializer, ReleaseSerializer, \
+    ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
 
@@ -94,6 +95,11 @@ class GenreAPI(CommonListAPIView):
     serializer_class = GenreSerializer
 
 
+class ReleaseAPI(CommonListAPIView):
+    queryset = Release
+    serializer_class = ReleaseSerializer
+
+
 @api_view(['GET', 'POST'])
 def manga_list(request):
     if request.method == 'GET':
@@ -110,20 +116,51 @@ def manga_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def manga_detail(request, pk):
-    try:
-        manga = Manga.objects.get(pk=pk)
-    except Manga.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    manga = get_object_or_404(Manga, pk=pk)
     if request.method == 'GET':
+        chapter = Chapter.objects.filter(manga=manga).all()
+        chapter_serializer = ChapterSerializer(chapter, many=True)
+        chapters = [
+            {
+                'volume': item['volume'],
+                'chapter': item['chapter'],
+                'title': item['title'],
+                'user': item['user']
+            } for item in chapter_serializer.data
+        ]
         serializer = MangaSerializer(manga)
-        return Response(serializer.data)
+        response_data = {
+            **serializer.data,
+            'chapters': chapters,
+        }
+        return Response(response_data)
     elif request.method == 'PUT':
         serializer = MangaSerializer(manga, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         manga.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+@api_view(['GET', 'POST', 'PUT'])
+def chapter_detail(request, pk):
+    chapter = get_object_or_404(Chapter, pk=pk)
+    if request.method == 'GET':
+        images = chapter.extract_images()
+        serializer = ChapterSerializer(chapter)
+        response_data = {
+            **serializer.data,
+            'images': images
+        }
+        return Response(response_data)
+    elif request.method == 'POST' or request.method == 'PUT':
+        serializer = ChapterSerializer(chapter, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            if request.method == 'POST':
+                return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
