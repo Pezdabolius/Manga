@@ -4,6 +4,9 @@ from . import views
 urlpatterns = [
     path('api/manga_list/', views.manga_list),
     path('api/manga_detail/<pk>/', views.manga_detail),
+    path('api/manga_types/', views.TypeAPI.as_view()),
+    path('api/manga_status/', views.StatusAPI.as_view()),
+    path('api/manga_rating/', views.RatingAPI.as_view()),
     path('api/author_list/', views.AuthorAPI.as_view()),
     path('api/author_detail/<pk>/', views.AuthorAPI.as_view()),
     path('api/artists_list/', views.ArtistAPI.as_view()),

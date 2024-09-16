@@ -9,6 +9,8 @@ from .serializers import MangaSerializer, AuthorSerializer, ArtistSerializer, \
     ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from .filter import MangaFilter
 
 
 class CommonListAPIView(APIView):
@@ -50,6 +52,21 @@ class CommonDetailAPIView(APIView):
                          'manga_list': manga_list
                          }
         return Response(response_data)
+
+
+class TypeAPI(APIView):
+    def get(self, request):
+        return Response([{'type': label} for code, label in Manga.MANGA_TYPE])
+
+
+class RatingAPI(APIView):
+    def get(self, request):
+        return Response([{'rating': label} for code, label in Manga.RATED])
+
+
+class StatusAPI(APIView):
+    def get(self, request):
+        return Response([{'status': label} for code, label in Manga.STATUS])
 
 
 class AuthorAPI(CommonListAPIView, CommonDetailAPIView):
@@ -104,7 +121,8 @@ class ReleaseAPI(CommonListAPIView):
 def manga_list(request):
     if request.method == 'GET':
         data = Manga.objects.all()
-        serializer = MangaSerializer(data, many=True)
+        filtered_data = MangaFilter(request.GET, queryset=data).qs
+        serializer = MangaSerializer(filtered_data, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
         serializer = MangaSerializer(data=request.data)
