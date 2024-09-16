@@ -1,0 +1,19 @@
+.main {
+	background-color: gray;
+	height: 100vh;
+	padding: 40px 100px 0;
+}
+.container {
+	width: 1200px;
+	margin: 0 auto;
+	background-color: white;
+	padding: 10px;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	.manga {
+		background-color: wheat;
+		padding: 20px;
+	}
+}

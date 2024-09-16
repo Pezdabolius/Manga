@@ -1,5 +1,6 @@
 import s from "./App.module.scss"
-import { MainRoutes } from "./pages/MainRoutes/MainRoutes"
+import { MainRoutes } from "./layouts/MainRoutes/MainRoutes"
+import "./assets/styles/reset.css"
 
 function App() {
 	return (
