@@ -1,8 +1,9 @@
 import { useState } from "react"
 import s from "./Header.module.scss"
 import { Link } from "react-router-dom"
+import { observer } from "mobx-react-lite"
 
-export const Header = () => {
+export const Header = observer(() => {
 	const [isCatalogOpen, setCatalogOpen] = useState(false)
 	const [isCatalogOpen2, setCatalogOpen2] = useState(false)
 
@@ -16,8 +17,8 @@ export const Header = () => {
 	return (
 		<header className={s.header}>
 			<nav className={s.nav}>
-				<Link to='/'>
-					<div className={s.nav_brand}>MangaApp</div>
+				<Link to='/' className={s.nav_brand}>
+					MangaApp
 				</Link>
 				<div className={s.nav_menu}>
 					<ul className={s.menu_list}>
@@ -64,4 +65,4 @@ export const Header = () => {
 			</nav>
 		</header>
 	)
-}
+})

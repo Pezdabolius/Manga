@@ -1,0 +1,59 @@
+.main {
+	background-color: white;
+	height: 100vh;
+	width: 100%;
+}
+
+.container {
+	width: 1200px;
+	margin: 0 auto;
+	background-color: wheat;
+	padding: 10px;
+	display: flex;
+	height: 100%;
+	.blocks {
+		display: flex;
+		gap: 10px;
+		width: 100%;
+		.left {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			gap: 10px;
+			width: 250px;
+			&_back_image {
+				width: 100%;
+			}
+			&_btn_read {
+				padding: 15px;
+				background-color: orange;
+				width: 100%;
+				transition: ease-out 0.1s;
+				&:hover {
+					color: white;
+				}
+			}
+			&_types_info {
+				width: 100%;
+				background-color: white;
+				height: 100%;
+			}
+		}
+		.right {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			gap: 20px;
+			&_title_rating {
+				display: flex;
+				justify-content: space-between;
+				width: 100%;
+			}
+			&_content {
+				width: 100%;
+				height: 80%;
+				background-color: white;
+			}
+		}
+	}
+}

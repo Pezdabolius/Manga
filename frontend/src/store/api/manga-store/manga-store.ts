@@ -8,12 +8,14 @@ class MangaStore {
     constructor() {
         makeAutoObservable(this);
     }
-    mangaData?: IPromiseBasedObservable<GetMangaResponse[]>;
+    // @ts-ignore
+    mangaData: IPromiseBasedObservable<GetMangaResponse[]> = []
 
     getMangaAction = async () => {
         try {
-            const promise = getManga();
-            this.mangaData = fromPromise(promise);
+            // @ts-ignore
+            this.mangaData = fromPromise(getManga())
+            // console.log(this.mangaData)
         } catch (err) {
             console.error('Error in getMangaAction:', err);
         }
