@@ -34,7 +34,14 @@ export const MangaItem = observer(() => {
 		fetchManga()
 	}, [params.title])
 
-	if (loading) return <div>Загрузка...</div>
+	const InfoBlock = ({ subtitle, title }: InfoBlockProps) => (
+		<div className={s.left_types_wrap}>
+			<div className={s.left_types_info_subtitle}>{subtitle}</div>
+			<div className={s.left_types_info_title}>{title}</div>
+		</div>
+	)
+
+	if (loading) return <div>Loading...</div>
 	if (error) return <div>{error}</div>
 	if (!manga) return null
 
@@ -48,33 +55,25 @@ export const MangaItem = observer(() => {
 						</div>
 						<button className={s.left_btn_read}>READ CHAPTER LIST</button>
 						<div className={s.left_types_info}>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Type</div>
-								<div className={s.left_types_info_title}>{manga.type}</div>
-							</div>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Status</div>
-								<div className={s.left_types_info_title}>{manga.status}</div>
-							</div>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Author</div>
-								<div className={s.left_types_info_title}>{manga.author}</div>
-							</div>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Artist</div>
-								<div className={s.left_types_info_title}>{manga.artist}</div>
-							</div>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Release</div>
-								<div className={s.left_types_info_title}>{manga.release}</div>
-							</div>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Publisher</div>
-								<div className={s.left_types_info_title}>{manga.publisher}</div>
-							</div>
-							<div className={s.left_types_wrap}>
-								<div className={s.left_types_info_subtitle}>Rating</div>
-								<div className={s.left_types_info_title}>{manga.rating}</div>
+							<div className={s.left_types_info}>
+								{['Type', 'Status', 'Author', 'Artist', 'Release', 'Publisher', 'Rating'].map(
+									(field, index) => {
+										const value = manga[field.toLowerCase() as keyof GetMangaResponse]
+										return (
+											<InfoBlock
+												key={index}
+												subtitle={field}
+												title={
+													typeof value === 'number'
+														? value.toString()
+														: Array.isArray(value)
+														? value.join(', ')
+														: value
+												}
+											/>
+										)
+									}
+								)}
 							</div>
 						</div>
 					</div>
@@ -93,10 +92,10 @@ export const MangaItem = observer(() => {
 						</div>
 						<div className={s.right_content}>
 							<div className={s.right_content_descr}>{manga.description}</div>
-							<div className={s.right_content_tags}>
-								{manga.tag?.map((tag) => (
-									<div key={tag} className={s.tag}>
-										{tag}
+							<div className={s.right_content_genre}>
+								{manga.genre?.map((genre) => (
+									<div key={genre} className={s.genre}>
+										{genre}
 									</div>
 								))}
 							</div>
@@ -107,3 +106,8 @@ export const MangaItem = observer(() => {
 		</div>
 	)
 })
+
+interface InfoBlockProps {
+	subtitle: string
+	title: string | undefined
+}

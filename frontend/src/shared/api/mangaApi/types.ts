@@ -4,8 +4,8 @@ export interface GetMangaResponse {
 	artist: string
 	publisher: string
 	tag: string[]
-	genre: string
-	release: string
+	genre: string[]
+	release: string[]
 	type: string
 	status: string
 	title: string
