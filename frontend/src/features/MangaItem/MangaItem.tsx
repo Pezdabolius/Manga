@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import s from './MangaItem.module.scss'
 import { observer } from 'mobx-react-lite'
 import { Link, useParams } from 'react-router-dom'
-import { getManga } from '../../../../shared/api/mangaApi/api'
-import { GetMangaResponse } from '../../../../shared/api/mangaApi/types'
+import { getManga } from '../../shared/api/mangaApi/api'
+import { GetMangaResponse } from '../../shared/api/mangaApi/types'
 
 export const MangaItem = observer(() => {
 	const params = useParams<{ title: string }>()
