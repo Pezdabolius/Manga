@@ -53,6 +53,14 @@ class CommonDetailAPIView(APIView):
                          }
         return Response(response_data)
 
+    def put(self, request, pk):
+        queryset = get_object_or_404(self.queryset, pk=pk)
+        serializer = self.serializer_class(queryset, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TypeAPI(APIView):
     def get(self, request):
@@ -123,7 +131,14 @@ def manga_list(request):
         data = Manga.objects.all()
         filtered_data = MangaFilter(request.GET, queryset=data).qs
         serializer = MangaSerializer(filtered_data, many=True)
-        return Response(serializer.data)
+        response_data = [
+            {
+                'title': item['title'],
+                'cover': item['cover'],
+                'type': item['type']
+            } for item in serializer.data
+        ]
+        return Response(response_data, status=status.HTTP_200_OK)
     elif request.method == 'POST':
         serializer = MangaSerializer(data=request.data)
         if serializer.is_valid():
