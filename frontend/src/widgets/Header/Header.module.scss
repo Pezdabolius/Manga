@@ -33,29 +33,7 @@
 				border: 1px solid #ccc;
 				border-radius: 6px;
 				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-				width: 75px;
-				z-index: 100;
-				padding: 3px;
-				cursor: pointer;
-				li {
-					padding: 7px;
-					cursor: pointer;
-					color: black;
-					font-size: 17px;
-					&:hover {
-						background-color: #f0f0f0;
-					}
-				}
-			}
-			.dropdown_add_author {
-				position: absolute;
-				top: 130%;
-				left: 0;
-				background-color: white;
-				border: 1px solid #ccc;
-				border-radius: 6px;
-				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-				width: 130px;
+				width: 90px;
 				z-index: 100;
 				padding: 3px;
 				cursor: pointer;

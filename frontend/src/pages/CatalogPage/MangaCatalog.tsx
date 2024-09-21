@@ -1,27 +1,37 @@
 import { useEffect } from "react"
 import { mangaStore } from "../../store/api/manga-store/manga-store"
-import s from "./MainPage.module.scss"
-import { GetMangaResponse } from "../../shared/api/mangaApi/types"
+import s from "./MangaCatalog.module.scss"
 import { observer } from "mobx-react-lite"
-import { useNavigate } from "react-router-dom"
+import { GetMangaResponse } from "../../shared/api/mangaApi/types"
+import { useLocation, useNavigate } from "react-router-dom"
 
-export const MainPage = observer(() => {
+const useQuery = () => {
+	return new URLSearchParams(useLocation().search)
+}
+
+export const MangaCatalog = observer(() => {
 	const { mangaData, getMangaAction } = mangaStore
+	const query = useQuery()
+	const typeFilter = query.get("type")
 	const navigate = useNavigate()
 
 	useEffect(() => {
 		getMangaAction()
 	}, [getMangaAction])
 
+	/* @ts-ignore */
+	const filteredData = mangaData?.value?.data?.filter(
+		(item: GetMangaResponse) => item.type.toLowerCase() === typeFilter?.toLowerCase()
+	)
+
 	return (
-		<div className={s.main}>
+		<div className={s.catalog}>
 			<div className={s.container}>
 				{mangaData.state === "pending" ? (
-					<div>Loading...</div>
+					<div>Загрузка...</div>
 				) : (
 					<>
-						{/* @ts-ignore */}
-						{mangaData?.value?.data?.map((item: GetMangaResponse) => {
+						{filteredData?.map((item: GetMangaResponse) => {
 							const imageUrl = `http://127.0.0.1:8000${item.cover}`
 							return (
 								<div key={item.id} className={s.manga}>

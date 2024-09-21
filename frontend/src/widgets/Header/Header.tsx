@@ -1,35 +1,33 @@
-import { useEffect, useRef, useState } from 'react'
-import s from './Header.module.scss'
-import { Link } from 'react-router-dom'
-import { observer } from 'mobx-react-lite'
+import { useEffect, useRef, useState } from "react"
+import s from "./Header.module.scss"
+import { Link, useNavigate } from "react-router-dom"
+import { observer } from "mobx-react-lite"
 
 export const Header = observer(() => {
 	const [isCatalogOpen, setCatalogOpen] = useState(false)
-	const [isCatalogOpen2, setCatalogOpen2] = useState(false)
 	const catalogRef = useRef<HTMLLIElement>(null)
-	const catalog2Ref = useRef<HTMLLIElement>(null)
+	const navigate = useNavigate()
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (catalogRef.current && !catalogRef.current.contains(event.target as Node)) {
 			setCatalogOpen(false)
 		}
-		if (catalog2Ref.current && !catalog2Ref.current.contains(event.target as Node)) {
-			setCatalogOpen2(false)
-		}
 	}
 
 	useEffect(() => {
-		document.addEventListener('mousedown', handleClickOutside)
+		document.addEventListener("mousedown", handleClickOutside)
 		return () => {
-			document.removeEventListener('mousedown', handleClickOutside)
+			document.removeEventListener("mousedown", handleClickOutside)
 		}
 	}, [])
 
 	const toggleCatalogMenu = () => {
 		setCatalogOpen(!isCatalogOpen)
 	}
-	const toggleCatalogMenu2 = () => {
-		setCatalogOpen2(!isCatalogOpen2)
+
+	const handleTypeClick = (type: string) => {
+		navigate(`/catalog?type=${type}`)
+		setCatalogOpen(false)
 	}
 
 	return (
@@ -41,43 +39,27 @@ export const Header = observer(() => {
 				<div className={s.nav_menu}>
 					<ul className={s.menu_list}>
 						<li ref={catalogRef} onClick={toggleCatalogMenu} className={s.menu_item}>
-							catalog
+							Catalog
 							{isCatalogOpen && (
 								<div className={s.dropdown_catalog}>
 									<ul>
-										<li>manga</li>
-										<li>comic</li>
+										<li onClick={() => handleTypeClick("manga")}>Manga</li>
+										<li onClick={() => handleTypeClick("comic")}>Comic</li>
+										<li onClick={() => handleTypeClick("manhwa")}>Manhwa</li>
+										<li onClick={() => handleTypeClick("manhua")}>Manhua</li>
 									</ul>
 								</div>
 							)}
 						</li>
-						<li className={s.menu_item}>search</li>
-						<li className={s.menu_item}>discussion</li>
-						<li ref={catalog2Ref} onClick={toggleCatalogMenu2} className={s.menu_item}>
-							...
-							{isCatalogOpen2 && (
-								<div className={s.dropdown_add_author}>
-									<ul>
-										<Link to='/'>
-											<li>Add Author</li>
-										</Link>
-										<Link to='/'>
-											<li>Add Artist</li>
-										</Link>
-										<Link to='/'>
-											<li>Create Team</li>
-										</Link>
-									</ul>
-								</div>
-							)}
-						</li>
+						<li className={s.menu_item}>Search</li>
+						<li className={s.menu_item}>Discussion</li>
 					</ul>
 				</div>
 				<div className={s.nav_menu2}>
 					<ul>
-						<li className={s.nav_sign_in}>sign in</li>
-						<li className={s.nav_sign_up}>sign up</li>
-						<li className={s.nav_color_theme}>theme</li>
+						<li className={s.nav_sign_in}>Sign In</li>
+						<li className={s.nav_sign_up}>Sign Up</li>
+						<li className={s.nav_color_theme}>Theme</li>
 					</ul>
 				</div>
 			</nav>
