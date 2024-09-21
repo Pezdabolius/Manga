@@ -5,12 +5,17 @@ import { observer } from "mobx-react-lite"
 
 export const Header = observer(() => {
 	const [isCatalogOpen, setCatalogOpen] = useState(false)
+	const [addMenuOpen, setAddMenuOpen] = useState(false)
 	const catalogRef = useRef<HTMLLIElement>(null)
+	const addMenuRef = useRef<HTMLLIElement>(null)
 	const navigate = useNavigate()
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (catalogRef.current && !catalogRef.current.contains(event.target as Node)) {
 			setCatalogOpen(false)
+		}
+		if (addMenuRef.current && !addMenuRef.current.contains(event.target as Node)) {
+			setAddMenuOpen(false)
 		}
 	}
 
@@ -23,6 +28,10 @@ export const Header = observer(() => {
 
 	const toggleCatalogMenu = () => {
 		setCatalogOpen(!isCatalogOpen)
+	}
+
+	const toggleAddMenu = () => {
+		setAddMenuOpen(!addMenuOpen)
 	}
 
 	const handleTypeClick = (type: string) => {
@@ -53,6 +62,27 @@ export const Header = observer(() => {
 						</li>
 						<li className={s.menu_item}>Search</li>
 						<li className={s.menu_item}>Discussion</li>
+						<li ref={addMenuRef} onClick={toggleAddMenu} className={s.menu_item}>
+							+
+							{addMenuOpen && (
+								<div className={s.dropdown_add}>
+									<ul>
+										<Link to='/add-title'>
+											<li>Add Title</li>
+										</Link>
+										<Link to='/add-author'>
+											<li>Add Author</li>
+										</Link>
+										<Link to='/add-artist'>
+											<li>Add Artist</li>
+										</Link>
+										<Link to='/add-publisher'>
+											<li>Add Publisher</li>
+										</Link>
+									</ul>
+								</div>
+							)}
+						</li>
 					</ul>
 				</div>
 				<div className={s.nav_menu2}>

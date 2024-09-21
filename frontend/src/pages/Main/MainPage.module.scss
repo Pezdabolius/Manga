@@ -1,19 +1,19 @@
 .main {
-	background-color: whitesmoke;
+	background-color: white;
 	min-height: 100vh;
 	padding: 40px 100px 0;
 }
 .container {
 	width: 1200px;
 	margin: 0 auto;
-	background-color: white;
+	background-color: whitesmoke;
 	display: flex;
 	flex-direction: column;
 	padding: 10px;
 	gap: 20px;
 	.manga {
 		display: flex;
-		background-color: rgb(226, 226, 226);
+		background-color: white;
 		height: 200px;
 		&_img {
 			display: block;
@@ -31,7 +31,7 @@
 				cursor: pointer;
 				transition: ease-out 0.1s;
 				&:hover {
-					color: orange;
+					color: darkgray;
 				}
 			}
 			.manga_type {

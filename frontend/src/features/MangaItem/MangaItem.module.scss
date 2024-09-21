@@ -2,12 +2,13 @@
 	background-color: white;
 	min-height: 100vh;
 	width: 100%;
+	padding: 20px 0;
 }
 
 .container {
 	width: 1200px;
 	margin: 0 auto;
-	background-color: wheat;
+	background-color: whitesmoke;
 	padding: 10px;
 	min-height: 100vh;
 	display: flex;
@@ -25,11 +26,12 @@
 			}
 			&_btn_read {
 				padding: 15px;
-				background-color: orange;
+				background-color: darkgray;
+				color: white;
 				width: 100%;
 				transition: ease-out 0.1s;
 				&:hover {
-					color: white;
+					color: black;
 				}
 			}
 			&_types_info {
@@ -58,17 +60,13 @@
 			gap: 20px;
 			.tabs {
 				display: flex;
-				gap: 10px;
+				gap: 20px;
 				.tab {
 					padding: 10px;
-					background-color: orange;
 					cursor: pointer;
 					text-decoration: none;
 					color: black;
-					border-radius: 8px;
-					&:hover {
-						background-color: lightcoral;
-					}
+					border-bottom: 1px solid gray;
 				}
 			}
 			&_title_rating {

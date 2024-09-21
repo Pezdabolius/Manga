@@ -1,5 +1,5 @@
 .header {
-	background-color: orange;
+	background-color: gray;
 	.nav {
 		height: 60px;
 		display: flex;
@@ -22,7 +22,7 @@
 				border-radius: 6px;
 				cursor: pointer;
 				&:hover {
-					background-color: rgb(255, 193, 77);
+					background-color: darkgray;
 				}
 			}
 			.dropdown_catalog {
@@ -34,6 +34,28 @@
 				border-radius: 6px;
 				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 				width: 90px;
+				z-index: 100;
+				padding: 3px;
+				cursor: pointer;
+				li {
+					padding: 7px;
+					cursor: pointer;
+					color: black;
+					font-size: 17px;
+					&:hover {
+						background-color: #f0f0f0;
+					}
+				}
+			}
+			.dropdown_add {
+				position: absolute;
+				top: 130%;
+				left: -100%;
+				background-color: white;
+				border: 1px solid #ccc;
+				border-radius: 6px;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+				width: 130px;
 				z-index: 100;
 				padding: 3px;
 				cursor: pointer;
@@ -60,7 +82,7 @@
 					color: white;
 					border-radius: 6px;
 					&:hover {
-						background-color: rgb(255, 193, 77);
+						background-color: darkgray;
 					}
 				}
 				.nav_sign_up {
@@ -69,7 +91,7 @@
 					border-radius: 6px;
 					color: white;
 					&:hover {
-						background-color: rgb(255, 193, 77);
+						background-color: darkgray;
 					}
 				}
 				.nav_color_theme {
@@ -77,7 +99,7 @@
 					padding: 10px;
 					border-radius: 6px;
 					&:hover {
-						background-color: rgb(255, 193, 77);
+						background-color: darkgray;
 					}
 				}
 			}
