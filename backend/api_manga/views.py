@@ -5,28 +5,11 @@ from rest_framework.views import APIView
 from .models import Author, Artist, Publisher, \
     Tag, Genre, Release, Manga, Chapter
 from .serializers import MangaSerializer, AuthorSerializer, ArtistSerializer, \
-    PublisherSerializer, TagSerializer, GenreSerializer, ReleaseSerializer, \
-    ChapterSerializer
+    PublisherSerializer, ChapterSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from .filter import MangaFilter
-
-
-class CommonListAPIView(APIView):
-    queryset = None
-    serializer_class = None
-
-    def get(self, request):
-        serializer = self.serializer_class(self.queryset.objects.all(), many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommonDetailAPIView(APIView):
@@ -62,67 +45,76 @@ class CommonDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TypeAPI(APIView):
-    def get(self, request):
-        return Response([{'type': label} for code, label in Manga.MANGA_TYPE])
+@api_view(['GET'])
+def trs_list(request):
+    if request.method == 'GET':
+        response_data = {
+            'type': [label for code, label in Manga.MANGA_TYPE],
+            'rating': [label for code, label in Manga.RATED],
+            'status': [label for code, label in Manga.STATUS]
+        }
+        return Response(response_data)
 
 
-class RatingAPI(APIView):
-    def get(self, request):
-        return Response([{'rating': label} for code, label in Manga.RATED])
+@api_view(['GET', 'POST'])
+def aap_list(request):
+    if request.method == 'GET':
+        response_data = {'author': [author for author in Author.objects.values_list('name', flat=True)],
+                         'artist': [artist for artist in Artist.objects.values_list('name', flat=True)],
+                         'publisher': [artist for artist in Publisher.objects.values_list('name', flat=True)]}
+        return Response(response_data)
+    elif request.method == 'POST':
+        data = request.data
+        response_data = {}
+        models = {
+            'author': Author,
+            'artist': Artist,
+            'publisher': Publisher,
+        }
+        for key, model in models.items():
+            if key in data:
+                name = data[key]
+                model = model.objects.create(name=name)
+                response_data[key] = {model.name}
+                return Response(response_data, status=status.HTTP_201_CREATED)
 
 
-class StatusAPI(APIView):
-    def get(self, request):
-        return Response([{'status': label} for code, label in Manga.STATUS])
-
-
-class AuthorAPI(CommonListAPIView, CommonDetailAPIView):
+class AuthorAPI(CommonDetailAPIView):
     queryset = Author
     serializer_class = AuthorSerializer
 
-    def get(self, request, pk=None):
-        if pk is None:
-            return CommonListAPIView.get(self, request)
-        else:
-            return CommonDetailAPIView.get(self, request, pk)
 
-
-class ArtistAPI(CommonListAPIView, CommonDetailAPIView):
+class ArtistAPI(CommonDetailAPIView):
     queryset = Artist
     serializer_class = ArtistSerializer
 
-    def get(self, request, pk=None):
-        if pk is None:
-            return CommonListAPIView.get(self, request)
-        else:
-            return CommonDetailAPIView.get(self, request, pk)
 
-
-class PublisherAPI(CommonListAPIView, CommonDetailAPIView):
+class PublisherAPI(CommonDetailAPIView):
     queryset = Publisher
     serializer_class = PublisherSerializer
 
-    def get(self, request, pk=None):
-        if pk is None:
-            return CommonListAPIView.get(self, request)
-        else:
-            return CommonDetailAPIView.get(self, request, pk)
 
-
-class TagAPI(CommonListAPIView):
-    queryset = Tag
-    serializer_class = TagSerializer
-
-
-class GenreAPI(CommonListAPIView):
-    queryset = Genre
-    serializer_class = GenreSerializer
-
-
-class ReleaseAPI(CommonListAPIView):
-    queryset = Release
-    serializer_class = ReleaseSerializer
+@api_view(['GET', 'POST'])
+def trg_list(request):
+    if request.method == 'GET':
+        response_data = {'tag': [tag for tag in Tag.objects.values_list('name', flat=True)],
+                         'release': [release for release in Release.objects.values_list('name', flat=True)],
+                         'genre': [genre for genre in Genre.objects.values_list('name', flat=True)]}
+        return Response(response_data)
+    if request.method == 'POST':
+        data = request.data
+        response_data = {}
+        models = {
+            'tag': Tag,
+            'release': Release,
+            'genre': Genre,
+        }
+        for key, model in models.items():
+            if key in data:
+                name = data[key]
+                model = model.objects.create(name=name)
+                response_data[key] = {model.name}
+                return Response(response_data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET', 'POST'])

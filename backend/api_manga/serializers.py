@@ -23,24 +23,6 @@ class AuthorSerializer(CommonSerializer):
         fields = ['name', 'description']
 
 
-class TagSerializer(CommonSerializer):
-    class Meta(CommonSerializer.Meta):
-        model = Tag
-        fields = ['name']
-
-
-class GenreSerializer(CommonSerializer):
-    class Meta(CommonSerializer.Meta):
-        model = Genre
-        fields = ['name']
-
-
-class ReleaseSerializer(CommonSerializer):
-    class Meta(CommonSerializer.Meta):
-        model = Release
-        fields = ['name']
-
-
 class PublisherSerializer(CommonSerializer):
     class Meta(CommonSerializer.Meta):
         model = Publisher
@@ -51,6 +33,24 @@ class ArtistSerializer(CommonSerializer):
     class Meta(CommonSerializer.Meta):
         model = Artist
         fields = ['name', 'description']
+
+
+# class TagSerializer(CommonSerializer):
+#     class Meta(CommonSerializer.Meta):
+#         model = Tag
+#         fields = ['name']
+#
+#
+# class GenreSerializer(CommonSerializer):
+#     class Meta(CommonSerializer.Meta):
+#         model = Genre
+#         fields = ['name']
+#
+#
+# class ReleaseSerializer(CommonSerializer):
+#     class Meta(CommonSerializer.Meta):
+#         model = Release
+#         fields = ['name']
 
 
 class MangaSerializer(serializers.ModelSerializer):
